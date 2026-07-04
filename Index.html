@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 🎉</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+overflow:hidden;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#ff6ec7,#ff9671,#ffc75f,#f9f871);
+background-size:400% 400%;
+animation:bgMove 12s infinite alternate;
+}
+
+@keyframes bgMove{
+0%{background-position:left;}
+100%{background-position:right;}
+}
+
+.card{
+position:relative;
+width:90%;
+max-width:420px;
+background:rgba(255,255,255,.18);
+backdrop-filter:blur(10px);
+padding:35px 25px;
+border-radius:25px;
+text-align:center;
+color:white;
+box-shadow:0 20px 40px rgba(0,0,0,.2);
+z-index:2;
+}
+
+h1{
+font-size:2.3rem;
+margin-bottom:15px;
+animation:glow 1.5s infinite alternate;
+}
+
+@keyframes glow{
+from{
+text-shadow:0 0 10px white;
+}
+to{
+text-shadow:0 0 25px yellow,
+0 0 40px orange;
+}
+}
+
+h2{
+font-size:1.4rem;
+margin-bottom:20px;
+}
+
+p{
+font-size:1rem;
+line-height:1.7;
+}
+
+button{
+margin-top:30px;
+padding:14px 30px;
+border:none;
+border-radius:40px;
+background:#fff;
+color:#ff4b7d;
+font-size:18px;
+cursor:pointer;
+font-weight:bold;
+transition:.3s;
+}
+
+button:hover{
+transform:scale(1.08);
+background:#ffeaa7;
+}
+
+.balloon{
+position:absolute;
+bottom:-180px;
+width:70px;
+height:90px;
+border-radius:50%;
+animation:float 10s linear infinite;
+opacity:.8;
+}
+
+.balloon:before{
+content:'';
+position:absolute;
+left:34px;
+top:88px;
+width:2px;
+height:120px;
+background:white;
+}
+
+.red{background:#ff4b5c;left:10%;}
+.blue{background:#4da6ff;left:30%;animation-delay:2s;}
+.green{background:#32cd32;left:55%;animation-delay:4s;}
+.yellow{background:#ffd93d;left:80%;animation-delay:1s;}
+
+@keyframes float{
+0%{
+transform:translateY(0);
+}
+100%{
+transform:translateY(-130vh);
+}
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+pointer-events:none;
+}
+
+.footer{
+margin-top:20px;
+font-size:.9rem;
+opacity:.9;
+}
+
+@media(max-width:480px){
+
+h1{
+font-size:1.8rem;
+}
+
+h2{
+font-size:1.2rem;
+}
+
+.card{
+padding:25px 20px;
+}
+
+button{
+font-size:16px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="balloon red"></div>
+<div class="balloon blue"></div>
+<div class="balloon green"></div>
+<div class="balloon yellow"></div>
+
+<div class="card">
+
+<h1>🎉 Happy Birthday 🎉</h1>
+
+<h2>Dear Friend ❤️</h2>
+
+<p>
+May your day be filled with endless happiness,
+beautiful moments,
+lots of laughter,
+and all the success your heart desires.
+<br><br>
+Wishing you a year full of love, health, and unforgettable memories.
+🥳🎂🎁
+</p>
+
+<button onclick="celebrate()">
+🎊 Celebrate!
+</button>
+
+<div class="footer">
+Made with ❤️ Just for You
+</div>
+
+</div>
+
+<script>
+
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let confetti=[];
+
+const colors=[
+"#ff0a54",
+"#ff477e",
+"#ff7096",
+"#fbb1bd",
+"#f9bec7",
+"#00f5d4",
+"#00bbf9",
+"#fee440",
+"#9b5de5"
+];
+
+function createConfetti(){
+
+for(let i=0;i<300;i++){
+
+confetti.push({
+
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height-canvas.height,
+r:Math.random()*8+2,
+d:Math.random()*300,
+color:colors[Math.floor(Math.random()*colors.length)],
+tilt:Math.random()*10,
+speed:Math.random()*3+2
+
+});
+
+}
+
+}
+
+createConfetti();
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+confetti.forEach(c=>{
+
+ctx.beginPath();
+ctx.fillStyle=c.color;
+ctx.fillRect(c.x,c.y,c.r,c.r*2);
+
+});
+
+update();
+
+requestAnimationFrame(draw);
+
+}
+
+function update(){
+
+confetti.forEach(c=>{
+
+c.y+=c.speed;
+c.x+=Math.sin(c.d);
+
+if(c.y>canvas.height){
+
+c.y=-20;
+c.x=Math.random()*canvas.width;
+
+}
+
+});
+
+}
+
+draw();
+
+window.addEventListener("resize",()=>{
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+});
+
+function celebrate(){
+
+for(let i=0;i<120;i++){
+
+confetti.push({
+
+x:Math.random()*canvas.width,
+y:-20,
+r:Math.random()*8+3,
+d:Math.random()*300,
+color:colors[Math.floor(Math.random()*colors.length)],
+tilt:Math.random()*10,
+speed:Math.random()*5+3
+
+});
+
+}
+
+const msg=[
+"🎂 Happy Birthday!",
+"🎉 Have an Amazing Day!",
+"🥳 Stay Happy Always!",
+"🎁 Wishing You Success!",
+"❤️ Lots of Love!"
+];
+
+alert(msg[Math.floor(Math.random()*msg.length)]);
+
+}
+
+</script>
+
+</body>
+</html>
